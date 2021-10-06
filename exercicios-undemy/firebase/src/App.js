@@ -1,6 +1,6 @@
 
 import './app.css'
-import firebase from './firebaseConnection';
+import firebase from './services/firebaseConnection';
 import { useState } from 'react';
 
 function App() {
