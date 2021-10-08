@@ -13,3 +13,5 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
+//O BrowserRouter informa para a aplicacao que a partir de onde ele é chamado teremos um roteamento de componentes
