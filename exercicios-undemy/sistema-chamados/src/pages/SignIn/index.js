@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import './signin.css';
 import logo from '../../assets/logo.png'
 
-
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +29,6 @@ function SignIn() {
         </form>
 
         <Link to="/register">Criar uma conta</Link> {/*Usa o Link pq evita que a pagina sofra Refresh */}
-
       </div>
     </div>
   )
