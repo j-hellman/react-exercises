@@ -1,7 +1,6 @@
 
 import { useState } from 'react'; //Para ter estados
 import { Link } from 'react-router-dom';
-
 import './signin.css';
 import logo from '../../assets/logo.png'
 
@@ -15,6 +14,7 @@ function SignIn() {
   }
 
   return (
+    //Layout visivel ao usuario
     <div className="container-center">
       <div className="login">
         <div className="logo-area">
@@ -28,7 +28,7 @@ function SignIn() {
           <button type="submit">Acessar</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
         </form>
 
-        <Link to="/register">Criar uma conta</Link> {/*Usa o Link pq evita que a pagina sofra Refresh */}
+        <Link to="/register">Crie uma conta</Link> {/*Usa o Link pq evita que a pagina sofra Refresh */}
       </div>
     </div>
   )
