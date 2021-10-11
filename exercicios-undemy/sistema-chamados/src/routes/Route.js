@@ -1,5 +1,7 @@
 
 import { Route, Redirect } from 'react-router-dom'; //Redirect serve para direcionar o usuario p pagina que queremos
+import { useContext } from 'react'; //Necessario para usar o Context criado
+import { AuthContext } from '../contexts/auth'
 
 export default function RouteWrapper({ 
   //Aqui descontroi ele
@@ -7,9 +9,7 @@ export default function RouteWrapper({
   isPrivate, //Propriedade que nomeamos para dizer se a rota é privada ou nao
   ...rest //Spread operator para receber o restante das propriedades existentes no Route
 }){
-
-  const loading = false;
-  const signed = false;
+  const {signed, loading} = useContext(AuthContext);
 
   if(loading){
     return(
