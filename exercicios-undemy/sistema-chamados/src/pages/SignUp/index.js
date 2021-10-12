@@ -29,7 +29,7 @@ function SignUp() {
           <button type="submit">Cadastrar</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
         </form>
 
-        <Link to="/">Já tem uma conta? Entre aqui</Link> {/*Usa o Link pq evita que a pagina sofra Refresh */}
+        <Link to="/">Já tem uma conta? Entre aqui</Link> {/*Usa Link pq evita que a pagina sofra Refresh */}
       </div>
     </div>
 
