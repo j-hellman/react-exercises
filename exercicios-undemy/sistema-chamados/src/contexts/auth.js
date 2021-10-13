@@ -24,7 +24,38 @@ function AuthProvider({ children }) {
     loadStorage();
   }, [])
 
-  //Funcao de CADASTRO
+  //Fazendo login do usuario
+  async function signIn(email, password) {
+    setLoadingAuth(true);
+
+    //Login do usuario no Auth()
+    await firebase.auth().signInWithEmailAndPassword(email, password)
+    .then( async (value) => {
+      let uid = value.user.uid;
+
+      const userProfile = await firebase.firestore().collection('users')
+      .doc(uid).get();
+
+      let data = {
+        uid: uid,
+        nome: userProfile.data().nome,
+        avatarUrl: userProfile.data().avatarUrl,
+        email: value.user.email
+      };
+
+      setUser(data);
+      storageUser(data);
+      setLoadingAuth(false)
+    })
+
+
+    .catch((error) => {
+      console.log(error);
+      setLoadingAuth(false);
+    })
+  }
+
+  //Cadastrando novo usuario
   async function signUp(email, password, nome) {
     setLoadingAuth(true);
     
@@ -64,8 +95,7 @@ function AuthProvider({ children }) {
     localStorage.setItem('SistemaUser', JSON.stringify(data));
   }
 
-
-  //Desconecta o usuario do sistema
+  //Logout do usuario
   async function signOut() {
     await firebase.auth().signOut()
     localStorage.removeItem('SistemaUser'); //Apagar no localStorage
@@ -73,10 +103,12 @@ function AuthProvider({ children }) {
   }
 
   return(
-    <AuthContext.Provider value={{ //Vai disponibilizar para todos as informacoes passadas pelo value
+    <AuthContext.Provider value={{ 
+      //Disponibiliza para todos as informacoes passadas pelo value
       signed: !!user, 
       user, 
-      loading, 
+      loading,
+      signIn, 
       signUp, 
       signOut,
       loadingAuth

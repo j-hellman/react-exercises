@@ -1,5 +1,6 @@
 
-import { useState } from 'react'; //Para ter estados
+import { useState, useContext } from 'react'; //Para ter estados
+import { AuthContext } from '../../contexts/auth';
 import { Link } from 'react-router-dom';
 import './signin.css';
 import logo from '../../assets/logo.png'
@@ -7,10 +8,14 @@ import logo from '../../assets/logo.png'
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn, loadingAuth } = useContext(AuthContext);
 
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
-    alert('Clicou');
+    
+    if(email !== '' && password !== '') {
+      signIn(email, password)
+    }
   }
 
   return (
@@ -25,7 +30,7 @@ function SignIn() {
           <h1>Entrar</h1>
           <input type="text" placeholder="email@email.com" value={email} onChange={ (e) => setEmail(e.target.value) }/>
           <input type="password" placeholder="*********" value={password} onChange={ (e) => setPassword(e.target.value) }/>
-          <button type="submit">Acessar</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
+          <button type="submit">{loadingAuth ? 'Carregando..' : 'Acessar'}</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
         </form>
 
         <Link to="/register">Crie uma conta</Link> {/*Usa o Link pq evita que a pagina sofra Refresh */}
