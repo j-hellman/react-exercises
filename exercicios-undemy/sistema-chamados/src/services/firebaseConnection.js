@@ -1,6 +1,7 @@
 
 import firebase from 'firebase/compat/app'; //Biblioteca Firebase
 import 'firebase/compat/auth'; //Modulo de autenticacao do Firebase
+import 'firebase/compat/firestore'; //Tb banco de dados
 
 let firebaseConfig = {
   //Codigo copiado do banco de dados do Firebase

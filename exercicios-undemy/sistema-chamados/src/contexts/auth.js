@@ -10,7 +10,7 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(false); //Utilizado para colocar info 'carregando' no botao/ou qq outro lugar
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect( () => {
     function loadStorage(){
@@ -24,8 +24,62 @@ function AuthProvider({ children }) {
     loadStorage();
   }, [])
 
+  //Funcao de CADASTRO
+  async function signUp(email, password, nome) {
+    setLoadingAuth(true);
+    
+    await firebase.auth().createUserWithEmailAndPassword(email, password) //Cadastro do usuario no Auth()
+    .then( async (value) => {
+      let uid = value.user.uid;
+
+      await firebase.firestore().collection('users') //Cadastro no banco Firestore
+      .doc(uid).set({
+        //Cria um doc com uid passando nome e avatar
+        nome: nome,
+        avatarUrl: null
+      })
+      .then( () => {
+        let data = {
+          uid: uid,
+          nome: nome,
+          email: value.user.email,
+          avatarUrl: null
+        };
+        setUser(data);
+        storageUser(data);
+        setLoadingAuth(false);
+      })
+    })
+
+    //Em caso de algum error
+    .catch((error) => { 
+      console.log(error);
+      setLoadingAuth(false);
+    })
+  }
+
+  //Salva o item no localStorage
+  function storageUser(data) {
+    localStorage.setItem('SistemaUser', JSON.stringify(data));
+  }
+
+
+  //Desconecta o usuario do sistema
+  async function signOut() {
+    await firebase.auth().signOut()
+    localStorage.removeItem('SistemaUser'); //Apagar no localStorage
+    setUser(null);
+  }
+
   return(
-    <AuthContext.Provider value={{ signed: !!user, user, loading }}> {/*Vai disponibilizar para todos as informacoes passadas pelo value */}
+    <AuthContext.Provider value={{ //Vai disponibilizar para todos as informacoes passadas pelo value
+      signed: !!user, 
+      user, 
+      loading, 
+      signUp, 
+      signOut
+    }}
+    >
       {children}
     </AuthContext.Provider>
   )

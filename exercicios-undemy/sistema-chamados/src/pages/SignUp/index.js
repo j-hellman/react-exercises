@@ -1,16 +1,21 @@
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.png'
+import { AuthContext } from '../../contexts/auth';
+import logo from '../../assets/logo.png';
 
 function SignUp() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signUp } = useContext(AuthContext);
 
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
-    alert('Clicou');
+    
+    if(nome !== '' && email !== '' && password !== '') {
+      signUp(email, password, nome) //O signUp vem do context Auth
+    }
   }
 
   return ( 
