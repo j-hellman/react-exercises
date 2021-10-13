@@ -2,7 +2,7 @@
 //Vai disponibilizar em todas as paginas as informacoes do usuario: foto, nome etc
 //Assim como informar se o usuario esta signed or nao
 
-import { useState, useEffect, createContext} from 'react';
+import { useState, useEffect, createContext } from 'react';
 import firebase from '../services/firebaseConnection';
 
 export const AuthContext = createContext({});
@@ -16,7 +16,7 @@ function AuthProvider({ children }) {
     function loadStorage(){
       const storageUser = localStorage.getItem('SistemaUser'); //Verifica se tem usuario logado
       if (storageUser) {
-        setUser(JSON.parse(storageUser)); //JSON.parse converte de volta para objeto
+        setUser(JSON.parse(storageUser)); //JSON.parse converte de volta para objeto, pois os dados recebidos do servidor vem como string
         setLoading(false);
       }
       setLoading(false);
@@ -28,13 +28,14 @@ function AuthProvider({ children }) {
   async function signUp(email, password, nome) {
     setLoadingAuth(true);
     
-    await firebase.auth().createUserWithEmailAndPassword(email, password) //Cadastro do usuario no Auth()
+    //Cadastro do usuario no Auth()
+    await firebase.auth().createUserWithEmailAndPassword(email, password) 
     .then( async (value) => {
       let uid = value.user.uid;
 
-      await firebase.firestore().collection('users') //Cadastro no banco Firestore
-      .doc(uid).set({
-        //Cria um doc com uid passando nome e avatar
+      //Cadastro no banco Firestore
+      await firebase.firestore().collection('users') 
+      .doc(uid).set({ //Cria um doc com uid passando nome e avatar
         nome: nome,
         avatarUrl: null
       })
@@ -77,7 +78,8 @@ function AuthProvider({ children }) {
       user, 
       loading, 
       signUp, 
-      signOut
+      signOut,
+      loadingAuth
     }}
     >
       {children}
