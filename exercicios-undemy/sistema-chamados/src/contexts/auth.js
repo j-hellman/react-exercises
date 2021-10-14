@@ -4,6 +4,7 @@
 
 import { useState, useEffect, createContext } from 'react';
 import firebase from '../services/firebaseConnection';
+import { toast } from 'react-toastify';
 
 export const AuthContext = createContext({});
 
@@ -24,7 +25,7 @@ function AuthProvider({ children }) {
     loadStorage();
   }, [])
 
-  //Fazendo login do usuario
+  //LOGIN do usuario
   async function signIn(email, password) {
     setLoadingAuth(true);
 
@@ -46,8 +47,10 @@ function AuthProvider({ children }) {
       setUser(data);
       storageUser(data);
       setLoadingAuth(false)
-    })
 
+      //Mensagem Bem-vindo
+      toast.success(`bem-vindo(a) novamente ${value.user.email}!`)
+    })
 
     .catch((error) => {
       console.log(error);
@@ -55,7 +58,7 @@ function AuthProvider({ children }) {
     })
   }
 
-  //Cadastrando novo usuario
+  //CADASTRO do usuario
   async function signUp(email, password, nome) {
     setLoadingAuth(true);
     
@@ -81,6 +84,9 @@ function AuthProvider({ children }) {
         storageUser(data);
         setLoadingAuth(false);
       })
+
+
+
     })
 
     //Em caso de algum error
@@ -95,7 +101,7 @@ function AuthProvider({ children }) {
     localStorage.setItem('SistemaUser', JSON.stringify(data));
   }
 
-  //Logout do usuario
+  //LOGOUT do usuario
   async function signOut() {
     await firebase.auth().signOut()
     localStorage.removeItem('SistemaUser'); //Apagar no localStorage
