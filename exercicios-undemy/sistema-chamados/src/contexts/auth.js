@@ -46,14 +46,15 @@ function AuthProvider({ children }) {
 
       setUser(data);
       storageUser(data);
-      setLoadingAuth(false)
+      setLoadingAuth(false);
 
       //Mensagem Bem-vindo
-      toast.success(`bem-vindo(a) novamente ${value.user.email}!`)
+      toast.success(`Bem-vindo(a) novamente, ${data.nome}!`);
     })
 
     .catch((error) => {
       console.log(error);
+      toast.error('Ops, algo deu errado!', {position: toast.POSITION.TOP_CENTER})
       setLoadingAuth(false);
     })
   }
@@ -83,15 +84,16 @@ function AuthProvider({ children }) {
         setUser(data);
         storageUser(data);
         setLoadingAuth(false);
+        
+        //Mensagem Bem-vindo
+        toast.success(`Seja bem-vindo(a) à plataforma, ${data.nome}!`)
       })
-
-
-
     })
 
     //Em caso de algum error
     .catch((error) => { 
       console.log(error);
+      toast.error('Ops, algo deu errado!', {position: toast.POSITION.TOP_CENTER})
       setLoadingAuth(false);
     })
   }
@@ -106,6 +108,7 @@ function AuthProvider({ children }) {
     await firebase.auth().signOut()
     localStorage.removeItem('SistemaUser'); //Apagar no localStorage
     setUser(null);
+    toast.info('Usuário(a) deslogado com sucesso!')
   }
 
   return(
