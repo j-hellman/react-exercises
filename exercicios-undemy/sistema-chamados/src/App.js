@@ -11,7 +11,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes />
-        <ToastContainer autoClose={2500} />
+        <ToastContainer autoClose={3000} />
       </BrowserRouter>
     </AuthProvider>
   )

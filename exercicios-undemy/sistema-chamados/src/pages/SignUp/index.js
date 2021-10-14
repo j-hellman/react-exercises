@@ -3,6 +3,7 @@ import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 import logo from '../../assets/logo.png';
+import { toast } from 'react-toastify';
 
 function SignUp() {
   const [nome, setNome] = useState('');
@@ -13,9 +14,9 @@ function SignUp() {
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
     
-    if(nome !== '' && email !== '' && password !== '') {
-      signUp(email, password, nome) //O signUp vem do context Auth
-    }
+    if(nome == '' || email == '' || password == '') {
+      toast.warn('Favor preencher os campos corretamente.');
+    } else signUp(email, password, nome) //O signUp vem do context Auth
   }
 
   return ( 

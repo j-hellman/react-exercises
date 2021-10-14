@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/auth';
 import { Link } from 'react-router-dom';
 import './signin.css';
 import logo from '../../assets/logo.png'
+import { toast } from 'react-toastify';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -13,9 +14,9 @@ function SignIn() {
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
     
-    if(email !== '' && password !== '') {
-      signIn(email, password)
-    }
+    if(email == '' || password == '') {
+      toast.warn('Favor preencher os campos corretamente.');
+    } else signIn(email, password)
   }
 
   return (

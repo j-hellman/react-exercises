@@ -108,7 +108,6 @@ function AuthProvider({ children }) {
     await firebase.auth().signOut()
     localStorage.removeItem('SistemaUser'); //Apagar no localStorage
     setUser(null);
-    toast.info('Usuário(a) deslogado com sucesso!')
   }
 
   return(
