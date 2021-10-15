@@ -1,0 +1,91 @@
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  overflow: auto;
+  background-color: #181C2e;
+}
+
+.sidebar div {
+  background: url('../../assets/cover.png');
+  background-color: #181C2e;
+  background-position: center;
+  background-repeat: no-repeat; /*Pra nao repetir a imagem*/
+  background-size: cover;
+  
+  height: 150px;
+  padding-top: 30px;
+}
+
+.sidebar div img {
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+  width: 90px;
+  height: 90px;
+
+  /* Sombra */
+  -webkit-filter: drop-shadow(2px 3px 6px #121212); /*Pra navegadores mais antigos*/
+  filter: drop-shadow(2px 3px 6px #121212); /*Pra navegadores mais novos*/
+  
+  /*Para a imagem manter o radio aspect*/
+  object-fit: cover; 
+}
+
+.sidebar a {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 16px;
+  text-decoration: none;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  /*Para dar o efeito quando a:hover */
+  transition: ease-in-out .4s; 
+} 
+
+.sidebar a:hover { /*Config para o a:hover (junto com transition) */
+  background-color: #121212;
+  color: #FFF;
+}
+
+.sidebar a svg {
+  margin-right: .5em;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .sidebar a {
+    float: left; /*Alinhamento do texto */
+  }
+
+  .sidebar div {
+    display: none;
+  }
+
+  .sidebar a svg {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+
+  .sidebar a svg {
+    display: none;
+  }
+
+}

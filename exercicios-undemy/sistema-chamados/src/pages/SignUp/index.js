@@ -14,9 +14,10 @@ function SignUp() {
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
     
-    if(nome == '' || email == '' || password == '') {
+    if(nome == '' || email == '' || password == '')
       toast.warn('Favor preencher os campos corretamente.');
-    } else signUp(email, password, nome) //O signUp vem do context Auth
+    else 
+      signUp(email, password, nome); //O signUp vem do context Auth
   }
 
   return ( 

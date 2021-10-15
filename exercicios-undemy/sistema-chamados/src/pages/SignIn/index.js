@@ -14,9 +14,10 @@ function SignIn() {
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
     
-    if(email == '' || password == '') {
+    if(email == '' || password == '')
       toast.warn('Favor preencher os campos corretamente.');
-    } else signIn(email, password)
+    else 
+      signIn(email, password)
   }
 
   return (
