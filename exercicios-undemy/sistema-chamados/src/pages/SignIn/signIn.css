@@ -6,6 +6,7 @@
   background-color: #121212;
 }
 
+/* LOGIN box */
 .login {
   display: flex;
   justify-content: center;
@@ -15,6 +16,7 @@
   min-width: 22rem;
 }
 
+/* LOGO div */
 .logo-area {
   display: flex;
   justify-content: center;
@@ -23,12 +25,14 @@
   width: 100%;
 }
 
+/* LOGO */
 .logo-area img {
   width: 8rem;
   height: 5rem;
-  padding: .6rem;
+  padding: .5rem;
 }
 
+/* Form wrap */
 form {
   display: flex;
   flex-direction: column;
@@ -36,23 +40,26 @@ form {
   margin-top: 1rem;
 }
 
+/* Title */
 form h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   text-align: center;
   margin-bottom: 0.5em;
   color: #181c2e;
 }
 
+/* Inputs */
 .login input {
   margin-bottom: .7rem;
   height: 1.7rem;
   border: 0;
   border-radius: .3rem;
-  padding: .6rem;
+  padding: .5rem;
   font-size: .7rem;
   background-color: #FFF;
 }
 
+/* Button */
 form button {
   font-size: 1rem;
   color: #FFF;
@@ -62,8 +69,9 @@ form button {
   border-radius: .3rem;
 }
 
+/* Link phrase */
 .login a {
-  font-size: .8rem;
+  font-size: .7rem;
   margin: 1rem 0;
   color: #000;
   cursor: pointer;
