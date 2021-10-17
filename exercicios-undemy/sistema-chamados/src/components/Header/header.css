@@ -1,14 +1,16 @@
-
+/* Header na forma lateral */
 .sidebar {
   margin: 0;
   padding: 0;
-  width: 200px;
+  width: 10rem;
   height: 100%;
+
   position: fixed;
   overflow: auto;
   background-color: #181C2e;
 }
 
+/* Background avatar */
 .sidebar div {
   background: url('../../assets/cover.png');
   background-color: #181C2e;
@@ -16,16 +18,17 @@
   background-repeat: no-repeat; /*Pra nao repetir a imagem*/
   background-size: cover;
   
-  height: 150px;
-  padding-top: 30px;
+  height: 7.5rem;
+  padding-top: 1.5rem;
 }
 
+/* Avatar */
 .sidebar div img {
   border-radius: 50%;
   display: block;
   margin: auto;
-  width: 90px;
-  height: 90px;
+  width: 4.5rem;
+  height: 4.5rem;
 
   /* Sombra */
   -webkit-filter: drop-shadow(2px 3px 6px #121212); /*Pra navegadores mais antigos*/
@@ -35,10 +38,11 @@
   object-fit: cover; 
 }
 
+/* Links do Header */
 .sidebar a {
   display: block;
   color: rgba(255, 255, 255, 0.7);
-  padding: 16px;
+  padding: .8rem;
   text-decoration: none;
 
   display: flex;
@@ -46,7 +50,7 @@
   align-items: center;
 
   /*Para dar o efeito quando a:hover */
-  transition: ease-in-out .4s; 
+  transition: ease-in-out .5s; 
 } 
 
 .sidebar a:hover { /*Config para o a:hover (junto com transition) */
@@ -54,8 +58,15 @@
   color: #FFF;
 }
 
+/* Icones do Header */
 .sidebar a svg {
   margin-right: .5em;
+}
+
+/* Titulo em cada pagina */
+.content {
+  margin-left: 10rem;
+  padding: .1rem .8rem;
 }
 
 @media screen and (max-width: 700px) {
@@ -75,6 +86,10 @@
 
   .sidebar a svg {
     display: none;
+  }
+
+  .content {
+    margin-left: 0;
   }
 }
 
