@@ -11,13 +11,26 @@ function SignIn() {
   const [password, setPassword] = useState('');
   const { signIn, loadingAuth } = useContext(AuthContext);
 
+  //Inputs email e password
+  let femail = document.getElementById('femail');
+  let fpassword = document.getElementById('fpassword');
+
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
-    
-    if(email == '' || password == '')
+
+    //Checagem dos inputs
+    if (email == '' && password == '') {
       toast.warn('Favor preencher os campos corretamente.');
-    else 
-      signIn(email, password)
+      femail.focus(); //Cursor do mouse
+    } else if (email == '') {
+      toast.warn('Favor preencher o campo Email');
+      femail.focus();
+    } else if (password == '') {
+      toast.warn('Favor preencher o campo Senha');
+      fpassword.focus();
+    } else
+      signIn(email, password);
+    //
   }
 
   return (
@@ -25,13 +38,13 @@ function SignIn() {
     <div className="container-center">
       <div className="login">
         <div className="logo-area">
-          <img src={logo} alt="Logo Sistema"/>
+          <img src={logo} alt="Logo Sistema" />
         </div>
 
         <form onSubmit={handleSubmit}>
           <h1>Entrar</h1>
-          <input type="text" placeholder="email@email.com" value={email} onChange={ (e) => setEmail(e.target.value) }/>
-          <input type="password" placeholder="*********" value={password} onChange={ (e) => setPassword(e.target.value) }/>
+          <input type="text" id="femail" placeholder="email@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" id="fpassword" placeholder="*********" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button type="submit">{loadingAuth ? 'Carregando..' : 'Acessar'}</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
         </form>
 
