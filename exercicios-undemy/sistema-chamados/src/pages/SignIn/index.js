@@ -11,12 +11,13 @@ function SignIn() {
   const [password, setPassword] = useState('');
   const { signIn, loadingAuth } = useContext(AuthContext);
 
-  //Inputs email e password
-  let femail = document.getElementById('femail');
-  let fpassword = document.getElementById('fpassword');
-
+  
   function handleSubmit(e) {
     e.preventDefault(); //Para evitar que a pagina sofra Refresh
+    
+    //Inputs email e password
+    const femail = document.getElementById("femail");
+    const fpassword = document.getElementById("fpassword");
 
     //Checagem dos inputs
     if (email == '' && password == '') {
@@ -44,7 +45,7 @@ function SignIn() {
         <form onSubmit={handleSubmit}>
           <h1>Entrar</h1>
           <input type="text" id="femail" placeholder="email@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" id="fpassword" placeholder="*********" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" id="fpassword" placeholder="******" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button type="submit">{loadingAuth ? 'Carregando..' : 'Acessar'}</button> {/*Botao esta dentro do Form, entao pode usar o type=Submit */}
         </form>
 
