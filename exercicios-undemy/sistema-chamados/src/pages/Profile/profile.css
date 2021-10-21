@@ -1,0 +1,78 @@
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: .5rem;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  margin-bottom: 1rem;
+}
+
+.label-avatar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 280px;
+  cursor: pointer;
+}
+
+/* Botão 'Choose file' */
+.label-avatar input {
+  display: none;
+}
+
+/* Icone file */
+.label-avatar span {
+  z-index: 99; /*Vai ficar por cima de todos */
+  position: absolute; /*Vai ficar por cima de todos */
+  opacity: 0.5;
+  transition: all .5s; /*Prepara p/ aumentar o tamanho quando hover, junto com o Transform*/
+}
+
+.label-avatar span:hover {
+  opacity: 1;
+  transform: scale(1.2); /*Aumenta o tamanho quando hover, junto com o Transition*/
+}
+
+/* Foto profile */
+.form-profile img {
+  margin-bottom: 1em;
+  border-radius: 50%;
+  object-fit: cover; /*Pra nao perder o aspect radio*/
+}
+
+.form-profile label {
+  margin-bottom: .5rem;
+}
+
+.form-profile input, textarea, select {
+  max-width: 600px;
+  padding: .5rem;
+  border: 0;
+  border-radius: 5px;
+  margin-bottom: 1em;
+  background-color: #e9e3e3;
+}
+
+/* Email proibido editar */
+.form-profile input:disabled {
+  cursor: not-allowed;
+}
+
+/* Botao Salvar */
+.form-profile button {
+  max-width: 100px;
+}
+
+/* Botao Sair */
+.logout-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .3em 1em;
+  border: 1px solid #121212;
+  background-color: transparent;
+  border-radius: 5px;
+}

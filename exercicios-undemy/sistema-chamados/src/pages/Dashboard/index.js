@@ -6,7 +6,6 @@ import Title from '../../components/Title';
 import { FiHome } from 'react-icons/fi';
 
 export default function Dashboard() {
-  const { signOut } = useContext(AuthContext);
 
   return(
     <div>
@@ -16,10 +15,7 @@ export default function Dashboard() {
         <Title name="Chamados">
           <FiHome size={25} />
         </Title>
-
-        <button onClick={() => signOut()}>Fazer Logout</button>
       </div>
-
 
     </div>
   )
