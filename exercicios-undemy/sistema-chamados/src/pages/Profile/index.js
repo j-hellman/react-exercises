@@ -9,7 +9,7 @@ import avatar from '../../assets/avatar.png';
 
 
 export default function Profile() {
-  const { user, signOut } = useContext(AuthContext);
+  const { user, signOut, exiting } = useContext(AuthContext);
   const [nome, setNome] = useState(user && user.nome); //Se tiver User, insere o nome dele
   const [email, setEmail] = useState(user && user.email); //O '&&' diz como 'entao'
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
@@ -55,9 +55,7 @@ export default function Profile() {
 
         {/* Botao SAIR */}
         <div className="container">
-          <button className="logout-btn" onClick={() => signOut()}>
-            Sair
-          </button>
+          <button className="logout-btn" onClick={() => signOut()}> {exiting ? 'Saindo...' : 'Sair'} </button>
         </div>
 
       </div>

@@ -11,7 +11,8 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(false); //Utilizado para colocar info 'carregando' no botao/ou qq outro lugar
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); //Para o login e o logUp
+  const [exiting, setExiting] = useState(false); //Para o logOut
 
   useEffect( () => {
     function loadStorage(){
@@ -105,9 +106,11 @@ function AuthProvider({ children }) {
 
   //LOGOUT do usuario
   async function signOut() {
+    setExiting(true);
     await firebase.auth().signOut()
     localStorage.removeItem('SistemaUser'); //Apagar no localStorage
     setUser(null);
+    setExiting(false);
   }
 
   return(
@@ -116,6 +119,7 @@ function AuthProvider({ children }) {
       signed: !!user, 
       user, 
       loading,
+      exiting,
       signIn, 
       signUp, 
       signOut,
