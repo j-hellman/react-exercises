@@ -23,21 +23,46 @@ export default function Profile() {
     if (imageAvatar === null && nome !== '') {
       //Update no Firebase
       await firebase.firestore().collection('users')
-      .doc(user.uid)
-      .update({
-        nome: nome
-      })
-      .then(()=>{
-        //Update nas demais areas
-        let data = {
-          ...user,
+        .doc(user.uid)
+        .update({
           nome: nome
-        }
-        setUser(data);
-        storageUser(data);
-      })
-    }
+        })
+        .then(() => {
+          //Update nas demais areas
+          let data = {
+            ...user,
+            nome: nome
+          }
+          setUser(data);
+          storageUser(data);
+        })
 
+    } else if (nome !== '' && imageAvatar !== null) {
+      handleUpload();
+    }
+  }
+
+  //Para o Upload da imagem
+  function handleUpload() {
+
+  }
+
+  //Para o arquivo de imagem
+  function handleFile(e) {
+    if (e.target.files[0]) { //Caminho para a imagem
+      const image = e.target.files[0];
+
+      //Verificacao para o tipo de imagem
+      if (image.type === 'image/jpeg' || image.type === 'image/png') {
+        setImageAvatar(image);
+        setAvatarUrl(URL.createObjectURL(e.target.files[0]));
+
+      } else {
+        alert('Envie uma imagem do tipo JPEG ou PNG');
+        setImageAvatar(null);
+        return null;
+      }
+    }
   }
 
   return (
@@ -55,14 +80,14 @@ export default function Profile() {
           <form className="form-profile" onSubmit={handleSave}>
             <label className="label-avatar">
               <span>
-              {/* Icone de carregar a imagem */}
+                {/* Icone de carregar a imagem */}
                 <FiUpload color="#FFF" size={25} />
               </span>
 
               {/* Input para escolher a imagem a ser carregada */}
-              <input type="file" accept="image/*" /><br/>
-              { avatarUrl === null ?
-                <img src={avatar}  width="250" height="250" alt="Foto perfil usuario" />
+              <input type="file" accept="image/*" onChange={handleFile} /><br />
+              {avatarUrl === null ?
+                <img src={avatar} width="250" height="250" alt="Foto perfil usuario" />
                 :
                 <img src={avatarUrl} width="250" height="250" alt="Foto perfil usuario" />
               }
@@ -70,7 +95,7 @@ export default function Profile() {
 
             {/* Inputs */}
             <label>Nome</label>
-            <input type="text" value={nome} onChange={ (e) => setNome(e.target.value) }/>
+            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
 
             <label>Email</label>
             <input type="text" value={email} disabled={true} />
