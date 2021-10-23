@@ -1,6 +1,7 @@
 
 import './profile.css';
 import { useState, useContext } from 'react';
+import firebase from '../../services/firebaseConnection';
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
@@ -9,10 +10,35 @@ import avatar from '../../assets/avatar.png';
 
 
 export default function Profile() {
-  const { user, signOut, exiting } = useContext(AuthContext);
+  const { user, signOut, exiting, setUser, storageUser } = useContext(AuthContext);
   const [nome, setNome] = useState(user && user.nome); //Se tiver User, insere o nome dele
   const [email, setEmail] = useState(user && user.email); //O '&&' diz como 'entao'
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
+  const [imageAvatar, setImageAvatar] = useState(null);
+
+  async function handleSave(e) {
+    e.preventDefault();
+
+    //Faz o update apenas do Nome
+    if (imageAvatar === null && nome !== '') {
+      //Update no Firebase
+      await firebase.firestore().collection('users')
+      .doc(user.uid)
+      .update({
+        nome: nome
+      })
+      .then(()=>{
+        //Update nas demais areas
+        let data = {
+          ...user,
+          nome: nome
+        }
+        setUser(data);
+        storageUser(data);
+      })
+    }
+
+  }
 
   return (
     <div>
@@ -26,7 +52,7 @@ export default function Profile() {
 
         {/* Informacoes do usuario */}
         <div className="container">
-          <form className="form-profile">
+          <form className="form-profile" onSubmit={handleSave}>
             <label className="label-avatar">
               <span>
               {/* Icone de carregar a imagem */}

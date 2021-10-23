@@ -117,13 +117,15 @@ function AuthProvider({ children }) {
     <AuthContext.Provider value={{ 
       //Disponibiliza para todos as informacoes passadas pelo value
       signed: !!user, 
-      user, 
+      user,
+      setUser, 
       loading,
       exiting,
       signIn, 
       signUp, 
       signOut,
-      loadingAuth
+      loadingAuth,
+      storageUser
     }}
     >
       {children}
