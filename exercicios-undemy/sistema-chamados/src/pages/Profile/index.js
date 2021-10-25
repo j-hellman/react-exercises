@@ -46,7 +46,6 @@ export default function Profile() {
     function handleFile(e) {
       if (e.target.files[0]) { //Caminho para a imagem
         const image = e.target.files[0];
-        console.log(image)
   
         //Verificacao para o tipo de imagem
         if (image.type === 'image/jpeg' || image.type === 'image/png') {
@@ -91,7 +90,6 @@ export default function Profile() {
             
             setUser(data);
             storageUser(data);
-
           })
         })
       })
