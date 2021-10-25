@@ -13,7 +13,7 @@ export default function Profile() {
   const { user, signOut, exiting, setUser, storageUser } = useContext(AuthContext);
   const [nome, setNome] = useState(user && user.nome); //Se tiver User, insere o nome dele
   const [email, setEmail] = useState(user && user.email); //O '&&' diz como 'entao'
-  const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
+  const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl); //Responsavel por mostrar no perfil
   const [imageAvatar, setImageAvatar] = useState(null);
 
   async function handleSave(e) {
@@ -41,29 +41,64 @@ export default function Profile() {
       handleUpload();
     }
   }
-
-  //Para o Upload da imagem
-  function handleUpload() {
-
-  }
-
-  //Para o arquivo de imagem
-  function handleFile(e) {
-    if (e.target.files[0]) { //Caminho para a imagem
-      const image = e.target.files[0];
-
-      //Verificacao para o tipo de imagem
-      if (image.type === 'image/jpeg' || image.type === 'image/png') {
-        setImageAvatar(image);
-        setAvatarUrl(URL.createObjectURL(e.target.files[0]));
-
-      } else {
-        alert('Envie uma imagem do tipo JPEG ou PNG');
-        setImageAvatar(null);
-        return null;
+  
+    //Para o arquivo de imagem
+    function handleFile(e) {
+      if (e.target.files[0]) { //Caminho para a imagem
+        const image = e.target.files[0];
+        console.log(image)
+  
+        //Verificacao para o tipo de imagem
+        if (image.type === 'image/jpeg' || image.type === 'image/png') {
+          setImageAvatar(image);
+          setAvatarUrl(URL.createObjectURL(e.target.files[0]));
+  
+        } else {
+          alert('Envie uma imagem do tipo JPEG ou PNG');
+          setImageAvatar(null);
+          return null;
+        }
       }
     }
+
+  //Enviar imagem para o Firebase
+  async function handleUpload() {
+    const currentUid = user.uid; //Saber qual uid do usuario logado
+
+    const uploadTask = await firebase.storage()
+      .ref(`images/${currentUid}/${imageAvatar.name}`) //Onde ficará armazenado no Firebase
+      .put(imageAvatar) //O que vai enviar
+      .then(async () => {
+        console.log('Foto enviada com sucesso');
+
+        await firebase.storage().ref(`images/${currentUid}`)
+        .child(imageAvatar.name).getDownloadURL()
+        .then(async (url) => {
+          let urlFoto = url;
+
+          await firebase.firestore().collection('users')
+          .doc(user.uid)
+          .update({
+            avatarUrl: urlFoto,
+            nome: nome
+          })
+          .then(() => {
+            let data = {
+              ...user,
+              avatarUrl: urlFoto,
+              nome: nome
+            };
+            
+            setUser(data);
+            storageUser(data);
+
+          })
+        })
+      })
+
   }
+
+
 
   return (
     <div>
