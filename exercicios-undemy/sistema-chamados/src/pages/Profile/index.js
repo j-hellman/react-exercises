@@ -17,16 +17,17 @@ export default function Profile() {
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl); //Responsavel por mostrar no perfil
   const [imageAvatar, setImageAvatar] = useState(null);
 
+  
   //Quando clica em escolher arquivo imagem
   function handleFile(e) {
     if (e.target.files[0]) { //Caminho para a imagem
       const image = e.target.files[0];
-
+      
       //Verificacao para o tipo de imagem
       if (image.type === 'image/jpeg' || image.type === 'image/png') {
         setImageAvatar(image);
         setAvatarUrl(URL.createObjectURL(e.target.files[0]));
-
+        
       } else {
         alert('Envie uma imagem do tipo JPEG ou PNG');
         setImageAvatar(null);
@@ -34,7 +35,7 @@ export default function Profile() {
       }
     }
   }
-
+  
   async function handleSave(e) {
     e.preventDefault();
     
@@ -59,12 +60,9 @@ export default function Profile() {
         })
         setSaving(false);
 
-    } else if (nome !== '' && imageAvatar !== null) {
+    } else if (nome !== '' && imageAvatar !== null) 
       handleUpload();
-    }
-    setSaving(false);
   }
-  
 
   //Enviar imagem para o Firebase
   async function handleUpload() {
