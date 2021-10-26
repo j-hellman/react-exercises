@@ -13,14 +13,35 @@ export default function Profile() {
   const { user, signOut, exiting, setUser, storageUser } = useContext(AuthContext);
   const [nome, setNome] = useState(user && user.nome); //Se tiver User, insere o nome dele
   const [email, setEmail] = useState(user && user.email); //O '&&' diz como 'entao'
+  const [saving, setSaving] = useState(false); //Para o Salvar
   const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl); //Responsavel por mostrar no perfil
   const [imageAvatar, setImageAvatar] = useState(null);
 
+  //Quando clica em escolher arquivo imagem
+  function handleFile(e) {
+    if (e.target.files[0]) { //Caminho para a imagem
+      const image = e.target.files[0];
+
+      //Verificacao para o tipo de imagem
+      if (image.type === 'image/jpeg' || image.type === 'image/png') {
+        setImageAvatar(image);
+        setAvatarUrl(URL.createObjectURL(e.target.files[0]));
+
+      } else {
+        alert('Envie uma imagem do tipo JPEG ou PNG');
+        setImageAvatar(null);
+        return null;
+      }
+    }
+  }
+
   async function handleSave(e) {
     e.preventDefault();
-
+    
     //Faz o update apenas do Nome
     if (imageAvatar === null && nome !== '') {
+      setSaving(true);
+
       //Update no Firebase
       await firebase.firestore().collection('users')
         .doc(user.uid)
@@ -36,32 +57,18 @@ export default function Profile() {
           setUser(data);
           storageUser(data);
         })
+        setSaving(false);
 
     } else if (nome !== '' && imageAvatar !== null) {
       handleUpload();
     }
+    setSaving(false);
   }
   
-    //Para o arquivo de imagem
-    function handleFile(e) {
-      if (e.target.files[0]) { //Caminho para a imagem
-        const image = e.target.files[0];
-  
-        //Verificacao para o tipo de imagem
-        if (image.type === 'image/jpeg' || image.type === 'image/png') {
-          setImageAvatar(image);
-          setAvatarUrl(URL.createObjectURL(e.target.files[0]));
-  
-        } else {
-          alert('Envie uma imagem do tipo JPEG ou PNG');
-          setImageAvatar(null);
-          return null;
-        }
-      }
-    }
 
   //Enviar imagem para o Firebase
   async function handleUpload() {
+    setSaving(true);
     const currentUid = user.uid; //Saber qual uid do usuario logado
 
     const uploadTask = await firebase.storage()
@@ -93,7 +100,7 @@ export default function Profile() {
           })
         })
       })
-
+    setSaving(false);
   }
 
 
@@ -133,7 +140,7 @@ export default function Profile() {
             <label>Email</label>
             <input type="text" value={email} disabled={true} />
 
-            <button type="submit">Salvar</button>
+            <button type="submit">{saving ? 'Salvando...' : 'Salvar'} </button>
           </form>
         </div>
 
