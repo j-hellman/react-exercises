@@ -138,6 +138,7 @@ export default function Profile() {
             <label>Email</label>
             <input type="text" value={email} disabled={true} />
 
+            {/* Botao SALVAR */}
             <button type="submit">{saving ? 'Salvando...' : 'Salvar'} </button>
           </form>
         </div>

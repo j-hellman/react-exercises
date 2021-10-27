@@ -12,12 +12,8 @@
 
 /* Background avatar */
 .sidebar div {
-  background: url('../../assets/cover.png');
-  background-color: #181C2e;
-  background-position: center;
-  background-repeat: no-repeat; /*Pra nao repetir a imagem*/
+  background: url('../../assets/cover.png') no-repeat center;
   background-size: cover;
-  
   height: 7.5rem;
   padding-top: 1.5rem;
 }
@@ -31,8 +27,8 @@
   height: 4.5rem;
 
   /* Sombra */
-  -webkit-filter: drop-shadow(2px 3px 6px #121212); /*Pra navegadores mais antigos*/
-  filter: drop-shadow(2px 3px 6px #121212); /*Pra navegadores mais novos*/
+  -webkit-filter: drop-shadow(2px 3px 6px #FFF); /*Pra navegadores mais antigos*/
+  filter: drop-shadow(0px 0px 3px #FFF); /*Pra navegadores mais novos*/
   
   /*Para a imagem manter o radio aspect*/
   object-fit: cover; 
