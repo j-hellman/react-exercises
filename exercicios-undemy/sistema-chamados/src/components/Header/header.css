@@ -27,7 +27,7 @@
   height: 4.5rem;
 
   /* Sombra */
-  -webkit-filter: drop-shadow(2px 3px 6px #FFF); /*Pra navegadores mais antigos*/
+  -webkit-filter: drop-shadow(0px 0px 3px #FFF); /*Pra navegadores mais antigos*/
   filter: drop-shadow(0px 0px 3px #FFF); /*Pra navegadores mais novos*/
   
   /*Para a imagem manter o radio aspect*/
