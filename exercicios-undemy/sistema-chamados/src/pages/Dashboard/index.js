@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { FiMessageSquare, FiPlus } from 'react-icons/fi';
 
 export default function Dashboard() {
+  const [chamados, setChamados] = useState([]);
 
   return(
     <div>
@@ -17,19 +18,26 @@ export default function Dashboard() {
           <FiMessageSquare size={25} />
         </Title>
 
-        <div className="container dashboard">
-          <span>Nenhum chamado registrado...</span>
-          <Link>
-            <FiPlus size={25} />
-            Novo chamado
-          </Link>
+        {/*Verificacao se ja existe algum chamado */}
+        {chamados.length === 0 ? ( 
+          <div className="container dashboard">
+            <span>Nenhum chamado registrado...</span>
 
-        </div>
-
-
+            <Link to="/new" className="new">
+              <FiPlus size={25} color="#FFF" />
+              Novo chamado
+            </Link>
+          </div>
+        ) : (
+          <> {/*FRAGMENT: tag que serve para nao precisar ter nenhuma estilizacao */}
+           <Link to="/new" className="new">
+              <FiPlus size={25} color="#FFF" />
+              Novo chamado
+            </Link>
+          </>
+        )}
 
       </div>
-
     </div>
   )
 }

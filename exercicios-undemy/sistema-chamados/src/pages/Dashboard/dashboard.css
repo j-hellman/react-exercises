@@ -6,22 +6,38 @@
   align-items: center;
 }
 
+/* Text */
+.dashboard span {
+  margin: 1em 0;
+  font-size: 1rem;
+  font-weight: 600; /* Define o quanto negrito o texto vai ser */
+}
+
 /* Button */
-.dashboard a {
+.new {
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-
+  float: right;
+  font-size: 1rem;
+  font-weight: 600;
   color: #FFF;
-  background-color: #6bb131;
+  background-color: #83bf02;
+
+  border: 0;
   width: 10rem;
-  padding: .3em;
-  margin-top: .7rem;
-  border-radius: 5px;
+  padding: .5em;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  transition: ease-in .3s;
 }
 
 /* ICONS button */
-.dashboard a svg {
+.new svg {
   margin-right: .5rem;
+}
+
+.new:hover {
+  background-color: #5fd204;
+  transform: scale(1.1);
 }
