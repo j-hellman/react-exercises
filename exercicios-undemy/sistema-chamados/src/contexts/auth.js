@@ -116,7 +116,7 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       //Disponibiliza para todos as informacoes passadas pelo value
-      signed: !!user,
+      signed: !!user, //"!!" transforma em boolean
       user,
       setUser,
       loading,
