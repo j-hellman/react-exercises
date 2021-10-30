@@ -1,0 +1,22 @@
+
+/* Text Area */
+form textarea {
+  height: 10rem;
+  resize: none; /*Anula a opcao de resize da area */
+}
+
+/* Todos inputs tipo radio */
+form input[type="radio"] {
+  margin: .3rem 0 1rem;
+}
+
+/* Todos inputs tipo radio menos o primeiro */
+form input[type="radio"]:not(:first-child) {
+  margin-left: 1rem;
+}
+
+/* Label dos inputs */
+.status label {
+  font-size: .9rem;
+  padding-left: .3rem;
+}
