@@ -65,6 +65,7 @@
   padding: .1rem .8rem;
 }
 
+/* Pagina Responsiva */
 @media screen and (max-width: 700px) {
   .sidebar {
     width: 100%;

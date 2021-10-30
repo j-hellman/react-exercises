@@ -70,7 +70,7 @@ table td {
 
 table th {
   font-size: .8rem;
-  letter-spacing: .2rem;
+  letter-spacing: .15rem;
   text-transform: uppercase;
 }
 
@@ -95,8 +95,8 @@ table td .badge {
   color: #FFF;
 }
 
-/* Responsive screen */
-@media (max-width: 600px) {
+/* Pagina Responsiva*/
+@media screen and (max-width: 600px) {
   table {
     border: 0;
   }
@@ -135,7 +135,7 @@ table td .badge {
     content: attr(data-label);
     float: left;
     font-weight: bold;
-    letter-spacing: .2rem;
+    letter-spacing: .15rem;
     text-transform: uppercase;
   }
   
