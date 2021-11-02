@@ -7,10 +7,6 @@ function App() {
   const [titulo, setTitulo] = useState('');
   const [autor, setAutor] = useState('');
 
-  useEffect() {
-
-  }, []
-
   // ***** Funcao botao adicionar *****
   async function handleAdd(){ 
 

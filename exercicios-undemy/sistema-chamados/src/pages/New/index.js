@@ -1,16 +1,62 @@
 
 import './new.css'
-import { useState, useEffect } from 'react';
-import Customers from '../Customers';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { FiPlusCircle } from 'react-icons/fi'
 
 export default function New() {
+  const [customers, setCustomers] = useState([]); //Array para a lista de customers baixada do servidor
+  const [loadCustomers, setLoadCustomers] = useState(true); //Loading para enquanto carrega lista customers
+  const [customerSelected, setCustomerSelected] = useState(0); //Para registrar a escolha do usuario na lista de customers
   const [assunto, setAssunto] = useState('Suporte');
   const [status, setStatus] = useState('Aberto');
   const [complemento, setComplemento] = useState('');
+
+  const { user } = useContext(AuthContext);
+
+  // Vai carregar toda hora que abrir a pagina Novo Chamado
+  useEffect(() => {
+    async function loadCustomers() {
+      await firebase.firestore().collection('customers')
+        .get()
+        .then((snapshot) => { 
+          //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
+          let lista = [];
+
+          snapshot.forEach((doc) => {
+            //Coloca agora o que vc quer dentro da lista
+            lista.push({
+              id: doc.id,
+              nomeFantasia: doc.data().nomeFantasia
+            })
+
+            // Verificacao para ver se tem algum cliente cadastrado ou nao
+            if (lista.length === 0) {
+              console.log('Nenhum cliente cadastrado');
+              setCustomers([{id:'1', nomeFantasia: 'CLIENTE LOJA'}]) //Cliente ficticio
+              setLoadCustomers(false);
+              return; //Para nao deixar ir para baixo
+            }
+
+            setCustomers(lista);
+            setLoadCustomers(false);
+          });
+
+        })
+        .catch((error) => {
+          console.log('Deu algum erro!', error);
+          setCustomers([{id: '1', nomeFantasia: ''}]) //Cliente ficticio. Passa manualmente para nao dar algum tipo de erro no app, pois pode dar algum bug
+          setLoadCustomers(false);
+        })
+
+    }
+
+    loadCustomers();
+
+  }, []);
 
   function handleRegister(e) {
     e.preventDefault();
@@ -24,6 +70,11 @@ export default function New() {
   //Chama quando troca a opcao de Status
   function handleOptionChange(e) {
     setStatus(e.target.value);
+  }
+
+  //Chama quando troca a opcao Cliente
+  function handleChangeCustomers(e) {
+    setCustomerSelected(e.target.value);
   }
 
   return (
@@ -40,10 +91,15 @@ export default function New() {
           <form className="form-profile" onSubmit={handleRegister}>
 
             <label>Cliente</label>
-            <select>
-              <option key={1} value={1}>
-                Sujeito
-              </option>
+            <select value={customerSelected} onChange={handleChangeCustomers}>
+              {/* As opcoes serao preenchidas de acordo com a lista baixada do servidor */}
+              {customers.map((item, index) => {
+                return(
+                  <option key={item.id} value={index}> 
+                    {item.nomeFantasia}
+                  </option>
+                )
+              })}
             </select>
 
             <label>Assunto</label>
