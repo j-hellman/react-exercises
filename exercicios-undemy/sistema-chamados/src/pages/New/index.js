@@ -6,6 +6,7 @@ import firebase from '../../services/firebaseConnection';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { FiPlusCircle } from 'react-icons/fi'
+import { toast } from 'react-toastify';
 
 export default function New() {
   const [customers, setCustomers] = useState([]); //Array para a lista de customers baixada do servidor
@@ -22,7 +23,7 @@ export default function New() {
     async function loadCustomers() {
       await firebase.firestore().collection('customers')
         .get()
-        .then((snapshot) => { 
+        .then((snapshot) => {
           //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
           let lista = [];
 
@@ -32,34 +33,56 @@ export default function New() {
               id: doc.id,
               nomeFantasia: doc.data().nomeFantasia
             })
+          })
 
-            // Verificacao para ver se tem algum cliente cadastrado ou nao
-            if (lista.length === 0) {
-              console.log('Nenhum cliente cadastrado');
-              setCustomers([{id:'1', nomeFantasia: 'CLIENTE LOJA'}]) //Cliente ficticio
-              setLoadCustomers(false);
-              return; //Para nao deixar ir para baixo
-            }
-
-            setCustomers(lista);
+          // Verificacao para ver se tem algum cliente cadastrado ou nao
+          if (lista.length === 0) {
+            console.log('Nenhum cliente cadastrado');
+            setCustomers([{ id: '1', nomeFantasia: 'CLIENTE LOJA' }]) //Cliente ficticio
             setLoadCustomers(false);
-          });
+            return; //Para nao deixar ir para baixo
+          }
 
-        })
-        .catch((error) => {
-          console.log('Deu algum erro!', error);
-          setCustomers([{id: '1', nomeFantasia: ''}]) //Cliente ficticio. Passa manualmente para nao dar algum tipo de erro no app, pois pode dar algum bug
+          setCustomers(lista);
           setLoadCustomers(false);
         })
 
+        .catch((error) => {
+          console.log('Deu algum erro!', error);
+          setCustomers([{ id: '1', nomeFantasia: '' }]) //Cliente ficticio. Passa manualmente para nao dar algum tipo de erro no app, pois pode dar algum bug
+          setLoadCustomers(false);
+        })
     }
 
     loadCustomers();
-
   }, []);
 
-  function handleRegister(e) {
+  // Chama quando clica no botao Salvar
+  async function handleRegister(e) {
     e.preventDefault();
+
+    // Cadastra os chamados no banco de dados Firebase
+    await firebase.firestore().collection('chamados')
+      .add({
+        created: new Date(), //Registra quando o chamado foi criado
+        cliente: customers[customerSelected].nomeFantasia,
+        clienteId: customers[customerSelected].id,
+        assunto: assunto,
+        status: status,
+        complemento: complemento,
+        userId: user.uid
+      })
+      .then(() => {
+        setCustomerSelected('0');
+        setAssunto('Suporte');
+        setStatus('Aberto');
+        setComplemento('');
+        toast.success('Novo Chamado cadastrado com sucesso.');
+      })
+      .catch((error) => {
+        console.log('Ops, deu algum erro.', error);
+        toast.error('Ops, deu algum error', error);
+      })
   }
 
   //Chama quando troca a opcao Assunto
@@ -74,6 +97,8 @@ export default function New() {
 
   //Chama quando troca a opcao Cliente
   function handleChangeCustomers(e) {
+    // console.log('Index do cliente selecionado: ', e.target.value);
+    // console.log('Cliente selecionado: ', customers[e.target.value]);
     setCustomerSelected(e.target.value);
   }
 
@@ -91,16 +116,22 @@ export default function New() {
           <form className="form-profile" onSubmit={handleRegister}>
 
             <label>Cliente</label>
-            <select value={customerSelected} onChange={handleChangeCustomers}>
-              {/* As opcoes serao preenchidas de acordo com a lista baixada do servidor */}
-              {customers.map((item, index) => {
-                return(
-                  <option key={item.id} value={index}> 
-                    {item.nomeFantasia}
-                  </option>
-                )
-              })}
-            </select>
+            {/* Renderizacao para mostrar o loading ou nao */}
+            {loadCustomers ? (
+              <input type="text" disabled={true} value="Carregando clientes..." />
+            ) : (
+              <select value={customerSelected} onChange={handleChangeCustomers}>
+                {/* As opcoes serao preenchidas de acordo com a lista baixada do servidor */}
+                {/* A funcao map percorre a lista */}
+                {customers.map((item, index) => {
+                  return (
+                    <option key={item.id} value={index}>
+                      {item.nomeFantasia}
+                    </option>
+                  )
+                })}
+              </select>
+            )}
 
             <label>Assunto</label>
             <select value={assunto} onChange={handleChangeSelect}>
@@ -129,7 +160,6 @@ export default function New() {
             <button type="submit">Salvar</button>
           </form>
         </div>
-
 
       </div>
     </div>
