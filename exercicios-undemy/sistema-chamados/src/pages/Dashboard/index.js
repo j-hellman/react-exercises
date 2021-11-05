@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { Link } from 'react-router-dom';
 import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from 'react-icons/fi';
+import { format } from 'date-fns';
 
 // Referencia para nao precisar ficar copiando toda a linha do codigo
 const listRef = firebase.firestore().collection('chamados').orderBy('created', 'desc');
@@ -14,36 +15,24 @@ export default function Dashboard() {
   const [chamados, setChamados] = useState([]);
   const [loading, setLoading] = useState(true); //Para enquanto estiver carregando a pagina
   const [loadingMore, setLoadingMore] = useState(false); //Para o botao 'carregar mais'
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [lastDocs, setLastDocs] = useState();
 
   useEffect(() => {
 
     loadChamados();
-
     return () => {
 
     }
   }, []);
 
-  // Chamando a fucao fora do useEffect pq fica disponivel pra qualquer outra funcionalidade, nao so dentro do useEffect
+  // Chamando a fucao fora do useEffect pra fica disponivel pra qualquer outra funcionalidade
   async function loadChamados() {
     await listRef.limit(5) // O limit serve para limitar a quantidade que aparece na lista, nesse caso limitando em 05
       .get()
-      .then((snapshot) => {
-        //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
-        let lista = [];
+      .then((snapshot) => { //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
+        updateState(snapshot);
 
-        snapshot.forEach((doc) => {
-          //Coloca agora o que vc quer dentro da lista
-          lista.push({
-            cliente: doc.data().cliente,
-            assunto: doc.data().assunto,
-            status: doc.data().status,
-            cadastro: doc.data().created
-          })
-        })
-
-        // console.log(lista);
-        setChamados(lista);
       })
 
       .catch((err) => {
@@ -51,6 +40,38 @@ export default function Dashboard() {
         setLoadingMore(false);
       })
 
+    setLoading(false);
+  }
+
+  async function updateState(snapshot) {
+    const isCollectionEmpty = snapshot.size === 0;
+
+    if (!isCollectionEmpty) {
+      let lista = [];
+
+      snapshot.forEach((doc) => {
+        //Coloca agora o que vc quer dentro da lista
+        lista.push({
+          id: doc.id,
+          cliente: doc.data().cliente,
+          clienteId: doc.data().clienteId,
+          assunto: doc.data().assunto,
+          status: doc.data().status,
+          complemento: doc.data().complemento,
+          created: doc.data().created,
+          createdFormated: format(doc.data().created.toDate(), 'dd/MM/yyyy')
+        })
+      })
+
+      const lastDoc = snapshot.docs[snapshot.docs.length -1]; //Pegando o ultimo documento buscado
+      setChamados(chamados => [...chamados, ...lista]);
+      setLastDocs(lastDoc);
+
+    } else {
+      setIsEmpty(true);
+    }
+
+    setLoadingMore(false);
   }
 
   return (
