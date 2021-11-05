@@ -80,8 +80,7 @@ export default function New() {
         toast.success('Novo Chamado cadastrado com sucesso.');
       })
       .catch((error) => {
-        console.log('Ops, deu algum erro.', error);
-        toast.error('Ops, deu algum error', error);
+        toast.error('Ops, deu algum error. Tente mais tarde.');
       })
   }
 
