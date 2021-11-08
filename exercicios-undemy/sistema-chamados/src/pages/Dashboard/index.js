@@ -5,8 +5,8 @@ import firebase from '../../services/firebaseConnection';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { Link } from 'react-router-dom';
-import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from 'react-icons/fi';
-import { format } from 'date-fns';
+import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from 'react-icons/fi'; // Biblioteca para icones
+import { format } from 'date-fns'; // Bublioteca para Datas
 
 // Referencia para nao precisar ficar copiando toda a linha do codigo
 const listRef = firebase.firestore().collection('chamados').orderBy('created', 'desc');
@@ -32,7 +32,6 @@ export default function Dashboard() {
       .get()
       .then((snapshot) => { //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
         updateState(snapshot);
-
       })
 
       .catch((err) => {
@@ -67,9 +66,8 @@ export default function Dashboard() {
       setChamados(chamados => [...chamados, ...lista]);
       setLastDocs(lastDoc);
 
-    } else {
+    } else
       setIsEmpty(true);
-    }
 
     setLoadingMore(false);
   }
