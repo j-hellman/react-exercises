@@ -21,9 +21,7 @@ export default function Dashboard() {
   useEffect(() => {
 
     loadChamados();
-    return () => {
 
-    }
   }, []);
 
   // Chamando a fucao fora do useEffect pra fica disponivel pra qualquer outra funcionalidade
@@ -77,15 +75,15 @@ export default function Dashboard() {
     setLoadingMore(true);
 
     await listRef.startAfter(lastDocs).limit(5)
-    .get()
-    .then((snapshot) => {
-      updateState(snapshot);
-    })
+      .get()
+      .then((snapshot) => {
+        updateState(snapshot);
+      })
 
   }
 
 
-  // Renderizacao condicional para carregando a pagina...
+  // Renderizacao condicional para carregando chamados...
   if (loading) {
     return (
       <div>
@@ -171,11 +169,15 @@ export default function Dashboard() {
               </tbody>
             </table>
 
-            {loadingMore && <h3 style={{textAlign: 'center', marginTop: 15}}>Buscando dados...</h3>}
-
+            {/* Mensagem: Buscando dados... (ao clicar no botao Buscar mais) */}
+            {/* {loadingMore && <h3 style={{ textAlign: 'center', marginTop: 15 }}>Buscando dados...</h3>} */}
 
             {/* Botao loadMore - So vai aparecer se obedecer a condicional abaixo */}
-            { !loadingMore && !isEmpty && <button className="btn-more" onClick={handleMore}>Buscar mais</button> }
+            {!isEmpty &&
+              <button className="btn-more" onClick={handleMore}>
+                {loadingMore ? "Buscando dados..." : "Buscar mais"}
+              </button>
+            }
           </>
         )}
 
