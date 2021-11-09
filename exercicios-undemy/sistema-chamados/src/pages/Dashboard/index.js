@@ -72,6 +72,19 @@ export default function Dashboard() {
     setLoadingMore(false);
   }
 
+  // Botao carregar mais
+  async function handleMore() {
+    setLoadingMore(true);
+
+    await listRef.startAfter(lastDocs).limit(5)
+    .get()
+    .then((snapshot) => {
+      updateState(snapshot);
+    })
+
+  }
+
+
   // Renderizacao condicional para carregando a pagina...
   if (loading) {
     return (
@@ -156,8 +169,13 @@ export default function Dashboard() {
                   )
                 })}
               </tbody>
-              
             </table>
+
+            {loadingMore && <h3 style={{textAlign: 'center', marginTop: 15}}>Buscando dados...</h3>}
+
+
+            {/* Botao loadMore - So vai aparecer se obedecer a condicional abaixo */}
+            { !loadingMore && !isEmpty && <button className="btn-more" onClick={handleMore}>Buscar mais</button> }
           </>
         )}
 
