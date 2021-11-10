@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import firebase from '../../services/firebaseConnection';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
+import Modal from '../../components/Modal';
 import { Link } from 'react-router-dom';
 import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from 'react-icons/fi'; // Biblioteca para icones
 import { format } from 'date-fns'; // Bublioteca para Datas
@@ -17,28 +18,31 @@ export default function Dashboard() {
   const [loadingMore, setLoadingMore] = useState(false); //Para o botao 'carregar mais'
   const [isEmpty, setIsEmpty] = useState(false);
   const [lastDocs, setLastDocs] = useState();
+  const [showPostModal, setShowPostModal] = useState(false); //Para a funcao do botao Search
+  const [detail, setDetail] = useState(); //Para a funcao do botao Search
+
 
   useEffect(() => {
 
-    loadChamados();
+    // Chamando a fucao fora do useEffect pra fica disponivel pra qualquer outra funcionalidade
+    async function loadChamados() {
+      await listRef.limit(5) // O limit serve para limitar a quantidade que aparece na lista, nesse caso limitando em 05
+        .get()
+        .then((snapshot) => { //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
+          updateState(snapshot);
+        })
 
+        .catch((err) => {
+          console.log('Ops, deu algum erro.', err);
+          setLoadingMore(false);
+        })
+
+      setLoading(false);
+    }
+
+    loadChamados();
   }, []);
 
-  // Chamando a fucao fora do useEffect pra fica disponivel pra qualquer outra funcionalidade
-  async function loadChamados() {
-    await listRef.limit(5) // O limit serve para limitar a quantidade que aparece na lista, nesse caso limitando em 05
-      .get()
-      .then((snapshot) => { //O snapshot é o nome dado ao que se recebe na solicitacao Get do servidor
-        updateState(snapshot);
-      })
-
-      .catch((err) => {
-        console.log('Ops, deu algum erro.', err);
-        setLoadingMore(false);
-      })
-
-    setLoading(false);
-  }
 
   async function updateState(snapshot) {
     const isCollectionEmpty = snapshot.size === 0;
@@ -70,7 +74,7 @@ export default function Dashboard() {
     setLoadingMore(false);
   }
 
-  // Botao carregar mais
+  // Botao Buscar Mais
   async function handleMore() {
     setLoadingMore(true);
 
@@ -79,7 +83,12 @@ export default function Dashboard() {
       .then((snapshot) => {
         updateState(snapshot);
       })
+  }
 
+  // Botao Search
+  function togglePostModal(item) {
+    setShowPostModal(!showPostModal); //trocando o valor boolean
+    setDetail(item);
   }
 
 
@@ -98,7 +107,6 @@ export default function Dashboard() {
         <div className="container dashboard">
           <span>Buscando chamados...</span>
         </div>
-
       </div>
     )
   }
@@ -156,7 +164,7 @@ export default function Dashboard() {
                       </td>
                       <td data-label="Cadastrado">{item.createdFormated}</td>
                       <td data-label="#">
-                        <button className="action" style={{ backgroundColor: '#3583f6' }}>
+                        <button className="action" style={{ backgroundColor: '#3583f6' }} onClick={() => togglePostModal(item)} >
                           <FiSearch color="#FFF" size={17} />
                         </button>
                         <button className="action" style={{ backgroundColor: '#F6a935' }}>
@@ -180,8 +188,15 @@ export default function Dashboard() {
             }
           </>
         )}
-
       </div>
+
+      {/* Botao Search */}
+      {showPostModal && (
+        <Modal
+          conteudo={detail}
+          close={togglePostModal}
+        />
+      )}
     </div>
   )
 }
