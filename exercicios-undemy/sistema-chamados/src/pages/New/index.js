@@ -3,12 +3,16 @@ import './new.css'
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
+import { useHistory, useParams } from 'react-router-dom'
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 import { FiPlusCircle } from 'react-icons/fi'
 import { toast } from 'react-toastify';
 
 export default function New() {
+  const { id } = useParams(); //Para editar chamado
+  const history = useHistory(); //Para editar chamado
+  const [idCustomer, setIdCustomer] = useState(false); //Para editar chamado
   const [customers, setCustomers] = useState([]); //Array para a lista de customers baixada do servidor
   const [loadCustomers, setLoadCustomers] = useState(true); //Loading para enquanto carrega lista customers
   const [customerSelected, setCustomerSelected] = useState(0); //Para registrar a escolha do usuario na lista de customers
@@ -45,6 +49,12 @@ export default function New() {
 
           setCustomers(lista);
           setLoadCustomers(false);
+
+          // Verifica se o usuario esta tentando Editar o chamado
+          if (id) {
+            loadId(lista)
+          }
+
         })
 
         .catch((error) => {
@@ -55,11 +65,62 @@ export default function New() {
     }
 
     loadCustomers();
-  }, []);
+  }, [id]);
+
+  // Funcao para Editar chamado usando ID
+  async function loadId(lista) {
+    await firebase.firestore().collection('chamados').doc(id)
+      .get()
+      .then((snapshot) => {
+        setAssunto(snapshot.data().assunto);
+        setStatus(snapshot.data().status);
+        setComplemento(snapshot.data().complemento);
+
+        // Busca o ID do usuario
+        let index = lista.findIndex(item => item.id === snapshot.data().clienteId)
+        setCustomerSelected(index);
+        setIdCustomer(true);
+      })
+
+      .catch((error) => {
+        console.log('Error no ID informado', error);
+        setIdCustomer(false);
+      })
+
+  }
+
 
   // Chama quando clica no botao Salvar
   async function handleRegister(e) {
     e.preventDefault();
+
+    // Para edicao do chamado
+    if (idCustomer) {
+      await firebase.firestore().collection('chamados')
+        .doc(id)
+        .update({
+          cliente: customers[customerSelected].nomeFantasia,
+          clienteId: customers[customerSelected].id,
+          assunto: assunto,
+          status: status,
+          complemento: complemento,
+          userId: user.uid
+        })
+
+        .then(() => {
+          toast.success('Chamdo editado com sucesso!');
+          setCustomerSelected(0);
+          setComplemento('');
+          history.push('/dashboard');
+        })
+
+        .catch((error) => {
+          toast.error('Error ao registrar, tente mais tarde');
+          console.log(error);
+        })
+
+      return;
+    }
 
     // Cadastra os chamados no banco de dados Firebase
     await firebase.firestore().collection('chamados')
