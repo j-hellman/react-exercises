@@ -20,16 +20,16 @@ function SignUp() {
     const fpassword = document.getElementById("fpassword");
 
     //Checagem dos inputs
-    if (nome == '' && email == '' && password == '') {
+    if (nome === '' && email === '' && password === '') {
       toast.warn('Favor preencher os campos corretamente.');
       fnome.focus(); //Cursor do mouse
-    } else if (nome == '') {
+    } else if (nome === '') {
       toast.warn('Favor preencher o campo Nome.');
       fnome.focus();
-    } else if (email == '') {
+    } else if (email === '') {
       toast.warn('Favor preencher o campo Email.');
       femail.focus();
-    } else if (password == '') {
+    } else if (password === '') {
       toast.warn('Favor preencher o campo Senha.');
       fpassword.focus();
     } else

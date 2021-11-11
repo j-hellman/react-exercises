@@ -22,16 +22,16 @@ export default function Customers() {
     const fendereco = document.getElementById('fendereco');
 
     //Checagem dos inputs
-    if (nomeFantasia == '' && cnpj == '' && endereco == '') {
+    if (nomeFantasia === '' && cnpj === '' && endereco === '') {
       toast.warn('Favor preencher os campos corretamente');
       fnomeFant.focus(); //Cursor do mouse
-    } else if (nomeFantasia == '') {
+    } else if (nomeFantasia === '') {
       toast.warn('Favor preencher o campo Nome Fantasia');
       fnomeFant.focus();
-    } else if (cnpj == '') {
+    } else if (cnpj === '') {
       toast.warn('Favor preencher o campo CNPJ');
       fcnpj.focus();
-    } else if (endereco == '') {
+    } else if (endereco === '') {
       toast.warn('Favor preencher o campo Endereço');
       fendereco.focus();
     } else 

@@ -141,7 +141,8 @@ export default function Dashboard() {
             <table>
               {/* Cabecalho da tabela */}
               <thead>
-                <tr> {/* Linha do cabecalho */}
+                {/* Linha do cabecalho */}
+                <tr>
                   {/* Colunas da tabela */}
                   <th scope="col">Cliente</th>
                   <th scope="col">Assunto</th>

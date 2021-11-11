@@ -20,13 +20,13 @@ function SignIn() {
     const fpassword = document.getElementById("fpassword");
 
     //Checagem dos inputs
-    if (email == '' && password == '') {
+    if (email === '' && password === '') {
       toast.warn('Favor preencher os campos corretamente.');
       femail.focus(); //Cursor do mouse
-    } else if (email == '') {
+    } else if (email === '') {
       toast.warn('Favor preencher o campo Email');
       femail.focus();
-    } else if (password == '') {
+    } else if (password === '') {
       toast.warn('Favor preencher o campo Senha');
       fpassword.focus();
     } else
